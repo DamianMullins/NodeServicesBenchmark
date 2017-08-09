@@ -4,7 +4,11 @@ namespace NodeServicesBenchmark.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult WithViewComponent()
+        {
+            return View();
+        }
+        public IActionResult NoViewComponent()
         {
             return View();
         }
