@@ -11,7 +11,7 @@ namespace BenchmarkApp
     public class ViewComponentBenchmarks :IDisposable
     {
         private const string Request = "/Home/WithViewComponent";
-        public const int TestRunCount = 10;
+        public const int TestRunCount = 1;
 
         private readonly TestServer _server;
         private readonly HttpClient _client;
@@ -30,8 +30,10 @@ namespace BenchmarkApp
         public async Task RunTests()
         {
             for (var i = 0; i < TestRunCount; i++)
-            {
-                await RunTest();
+			{
+				Console.WriteLine($"Test run {i} starting");
+				await RunTest();
+                Console.WriteLine($"Test run {i} completed");
             }
         }
 
