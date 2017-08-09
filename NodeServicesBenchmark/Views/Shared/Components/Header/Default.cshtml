@@ -1,0 +1,9 @@
+﻿@using NodeServicesBenchmark.Services
+
+@inject ITemplateService TemplateService
+
+@await TemplateService.GetTemplateAsync("f-header", new
+{
+    logoUrl = "/img/logos/je-logo-v1.svg",
+    companyName = "Just Eat"
+})
