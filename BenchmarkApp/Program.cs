@@ -6,7 +6,7 @@ namespace BenchmarkApp
     internal class Program
     {
         private static readonly IDictionary<string, double> Results = new Dictionary<string, double>();
-        private const int TestRunCount = 10000;
+        private const int TestRunCount = 1000;
 
         private static void Main()
         {
