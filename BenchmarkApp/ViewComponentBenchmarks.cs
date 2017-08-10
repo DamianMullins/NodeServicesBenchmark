@@ -14,14 +14,12 @@ namespace BenchmarkApp
 {
     public class ViewComponentBenchmarks : IDisposable
     {
-        public const int TestRunCount = 50;
 
         private readonly HttpClient _client;
         private readonly TestServer _server;
         private readonly IList<long> _results;
-
-        public string TestUrl { get; set; }
-        public string TestTitle { get; set; }
+        private readonly string _testUrl;
+        private readonly int _testRuns;
 
         private static string ContentPath
         {
@@ -33,8 +31,11 @@ namespace BenchmarkApp
             }
         }
 
-        public ViewComponentBenchmarks()
+        public ViewComponentBenchmarks(string testUrl, int testRuns)
         {
+            _testUrl = testUrl;
+            _testRuns = testRuns;
+
             var builder = new WebHostBuilder()
                 .UseContentRoot(ContentPath)
                 .UseStartup<Startup>();
@@ -47,39 +48,29 @@ namespace BenchmarkApp
             _results = new List<long>();
         }
 
-        public async Task RunTests()
+        public async Task<double> RunTests()
         {
-            Console.WriteLine($"Running {TestTitle} tests");
-
-            for (var i = 0; i < TestRunCount; i++)
+            for (var i = 0; i < _testRuns; i++)
             {
-                var watch = Stopwatch.StartNew();
-                
-				await RunTest();
-
-                watch.Stop();
-
-                var elapsedTime = watch.ElapsedMilliseconds;
-
-                _results.Add(elapsedTime);
-
-                Console.WriteLine($"Test {i+1} completed in {elapsedTime} milliseconds");
+                await RunTest();
             }
 
             // Remove the first result from the list as this include the time taken to spin up the test server
             var averageTime = _results.Skip(1).Average();
-
-            Console.WriteLine($"Average time taken was {averageTime} milliseconds");
-            Console.WriteLine("");
-            Console.WriteLine("---------------");
-            Console.WriteLine("");
+            return averageTime;
         }
 
         
         public async Task RunTest()
         {
-            var response = await _client.GetAsync(TestUrl);
+            var watch = Stopwatch.StartNew();
+
+            var response = await _client.GetAsync(_testUrl);
             await response.Content.ReadAsStringAsync();
+
+            watch.Stop();
+            var elapsedTime = watch.ElapsedMilliseconds;
+            _results.Add(elapsedTime);
         }
 
         public void Dispose()

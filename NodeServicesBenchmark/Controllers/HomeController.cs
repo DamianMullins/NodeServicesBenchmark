@@ -4,11 +4,21 @@ namespace NodeServicesBenchmark.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult WithViewComponent()
+
+        [HttpGet(Name = RouteNames.Home)]
+        public IActionResult Index()
         {
             return View();
         }
-        public IActionResult NoViewComponent()
+
+        [Route("no-template", Name = RouteNames.NoTemplateServiceRoute)]
+        public IActionResult NoTemplateService()
+        {
+            return View();
+        }
+
+        [Route("with-template", Name = RouteNames.WithTemplateServiceRoute)]
+        public IActionResult WithTemplateService()
         {
             return View();
         }

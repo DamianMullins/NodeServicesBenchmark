@@ -1,25 +1,34 @@
-﻿namespace BenchmarkApp
+﻿using System;
+using System.Collections.Generic;
+
+namespace BenchmarkApp
 {
     internal class Program
     {
+        private static readonly IDictionary<string, double> Results = new Dictionary<string, double>();
+        private const int TestRunCount = 10000;
+
         private static void Main()
         {
-            using (var test = new ViewComponentBenchmarks
-            {
-                TestTitle = "With View Component",
-                TestUrl = "/Home/WithViewComponent"
-            })
-            {
-                test.RunTests().Wait();
-            }
+            RunTest(title: "No Template Service", url: "/no-template", testRuns: TestRunCount);
+            RunTest(title: "With Template Service", url: "/with-template", testRuns: TestRunCount);
+            DisplayResults();
+        }
 
-            using (var test = new ViewComponentBenchmarks
+        private static void RunTest(string title, string url, int testRuns)
+        {
+            using (var test = new ViewComponentBenchmarks(url, testRuns))
             {
-                TestTitle = "No View Component",
-                TestUrl = "/Home/NoViewComponent"
-            })
+                var time = test.RunTests().Result;
+                Results.Add(title, time);
+            }
+        }
+
+        private static void DisplayResults()
+        {
+            foreach (var result in Results)
             {
-                test.RunTests().Wait();
+                Console.WriteLine($"{result.Key} ran {TestRunCount} times with an average time of {result.Value:N2} milliseconds.");
             }
         }
     }
