@@ -16,9 +16,21 @@ namespace BenchmarkApp
         private readonly TestServer _server;
         private readonly HttpClient _client;
 
+        private static string ContentPath
+        {
+            get
+            {
+                var path = PlatformServices.Default.Application.ApplicationBasePath;
+                var contentPath = Path.GetFullPath(Path.Combine(path, $@"..\..\..\..\{nameof(NodeServicesBenchmark)}"));
+                return contentPath;
+            }
+        }
+
         public ViewComponentBenchmarks()
         {
-            var builder = new WebHostBuilder().UseStartup<Startup>();
+            var builder = new WebHostBuilder()
+                .UseContentRoot(ContentPath)
+                .UseStartup<Startup>();
 
             _server = new TestServer(builder);
 
