@@ -28,23 +28,12 @@ The benchmark application uses the `Microsoft.AspNetCore.TestHost` package to cr
 
 _**Run on a Dell XPS 15, Win 10 Pro 64-bit, Intel Core i7-4712HQ 2.3GHz CPU, 16GB RAM**_
 
-### Run #1
-```shell
-No Template Service ran 10000 times with an average time of 0.02 milliseconds.
-With Template Service ran 10000 times with an average time of 2.46 milliseconds.
-With Cached Template Service ran 10000 times with an average time of 0.04 milliseconds.
-```
+Each test run performs 1000 requests against the an endpoint.
 
-### Run #2
-```shell
-No Template Service ran 10000 times with an average time of 0.02 milliseconds.
-With Template Service ran 10000 times with an average time of 2.37 milliseconds.
-With Cached Template Service ran 10000 times with an average time of 0.02 milliseconds.
-```
-
-### Run #3
-```shell
-No Template Service ran 10000 times with an average time of 0.02 milliseconds.
-With Template Service ran 10000 times with an average time of 2.26 milliseconds.
-With Cached Template Service ran 10000 times with an average time of 0.02 milliseconds.
-```
+| Run # | No Template Service | With Template Service | With Cached Template Service |
+|-------|---------------------|-----------------------|------------------------------|
+| 1     | 0.04ms              | 2.38ms                | 0.03ms                       |
+| 2     | 0.05ms              | 2.36ms                | 0.03ms                       |
+| 3     | 0.04ms              | 2.24ms                | 0.03ms                       |
+| 4     | 0.03ms              | 2.34ms                | 0.03ms                       |
+| 5     | 0.03ms              | 2.35ms                | 0.02ms                       |
