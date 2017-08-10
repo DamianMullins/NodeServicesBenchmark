@@ -1,20 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BenchmarkDotNet.Attributes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.PlatformAbstractions;
 using NodeServicesBenchmark;
 
 namespace BenchmarkApp
 {
-    public class ViewComponentBenchmarks :IDisposable
+    public class ViewComponentBenchmarks : IDisposable
     {
-        private const string Request = "/Home/WithViewComponent";
-        public const int TestRunCount = 1;
+        public const int TestRunCount = 50;
 
-        private readonly TestServer _server;
         private readonly HttpClient _client;
+        private readonly TestServer _server;
+        private readonly IList<long> _results;
+
+        public string TestUrl { get; set; }
+        public string TestTitle { get; set; }
 
         private static string ContentPath
         {
@@ -35,23 +42,43 @@ namespace BenchmarkApp
             _server = new TestServer(builder);
 
             _client = _server.CreateClient();
-            _client.BaseAddress = new Uri("http://localhost:5000");
+            _client.BaseAddress = new UriBuilder { Port = 5001 }.Uri;
+
+            _results = new List<long>();
         }
 
-        [Benchmark]
         public async Task RunTests()
         {
+            Console.WriteLine($"Running {TestTitle} tests");
+
             for (var i = 0; i < TestRunCount; i++)
-			{
-				Console.WriteLine($"Test run {i} starting");
+            {
+                var watch = Stopwatch.StartNew();
+                
 				await RunTest();
-                Console.WriteLine($"Test run {i} completed");
+
+                watch.Stop();
+
+                var elapsedTime = watch.ElapsedMilliseconds;
+
+                _results.Add(elapsedTime);
+
+                Console.WriteLine($"Test {i+1} completed in {elapsedTime} milliseconds");
             }
+
+            // Remove the first result from the list as this include the time taken to spin up the test server
+            var averageTime = _results.Skip(1).Average();
+
+            Console.WriteLine($"Average time taken was {averageTime} milliseconds");
+            Console.WriteLine("");
+            Console.WriteLine("---------------");
+            Console.WriteLine("");
         }
 
+        
         public async Task RunTest()
         {
-            var response = await _client.GetAsync(Request);
+            var response = await _client.GetAsync(TestUrl);
             await response.Content.ReadAsStringAsync();
         }
 
