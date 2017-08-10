@@ -1,4 +1,6 @@
-﻿namespace BenchmarkApp
+﻿using System;
+
+namespace BenchmarkApp
 {
     internal class Program
     {
@@ -7,6 +9,7 @@
             var viewComponentBenchmarks = new ViewComponentBenchmarks();
 
             viewComponentBenchmarks.RunTests().Wait();
+            Console.ReadLine();
         }
     }
 }
