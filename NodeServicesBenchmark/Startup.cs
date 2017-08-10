@@ -24,12 +24,12 @@ namespace NodeServicesBenchmark
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            services.AddMemoryCache();
             services.AddMvc();
-
             services.AddNodeServices();
 
             services.AddSingleton<ITemplateService, TemplateService>();
+            services.AddSingleton<ICachedTemplateService, CachedTemplateService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -23,6 +23,12 @@ namespace NodeServicesBenchmark.Controllers
             return View();
         }
 
+        [Route("with-cached-template", Name = RouteNames.WithCachedTemplateServiceRoute)]
+        public IActionResult WithCachedTemplateService()
+        {
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View();

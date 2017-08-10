@@ -1,0 +1,13 @@
+﻿@using NodeServicesBenchmark.Services
+@{
+    ViewData["Title"] = "With View Component";
+}
+
+@inject ICachedTemplateService CachedTemplateService
+
+@await CachedTemplateService.GetTemplateAsync("f-header", new
+{
+    logoUrl = "/img/logos/je-logo-v1.svg",
+    companyName = "Just Eat"
+})
+

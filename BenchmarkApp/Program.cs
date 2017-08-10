@@ -6,12 +6,14 @@ namespace BenchmarkApp
     internal class Program
     {
         private static readonly IDictionary<string, double> Results = new Dictionary<string, double>();
-        private const int TestRunCount = 10000;
+        private const int TestRunCount = 1000;
 
         private static void Main()
         {
             RunTest(title: "No Template Service", url: "/no-template", testRuns: TestRunCount);
             RunTest(title: "With Template Service", url: "/with-template", testRuns: TestRunCount);
+            RunTest(title: "With Cached Template Service", url: "/with-cached-template", testRuns: TestRunCount);
+
             DisplayResults();
         }
 
