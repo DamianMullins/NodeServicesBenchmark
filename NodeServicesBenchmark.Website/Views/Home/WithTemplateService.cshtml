@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "With View Component";
+}
+
+@inject ITemplateService TemplateService
+
+@await TemplateService.GetTemplateAsync("header", new
+{
+    logoUrl = "/img/logos/je-logo-v1.svg",
+    companyName = "Just Eat"
+})
