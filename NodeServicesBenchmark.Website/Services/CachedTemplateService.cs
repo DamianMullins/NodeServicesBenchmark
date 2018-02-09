@@ -20,7 +20,7 @@ namespace NodeServicesBenchmark.Website.Services
         {
             return await _memoryCache.GetOrCreateAsync(templateName, async entry =>
             {
-                entry.SetAbsoluteExpiration(TimeSpan.FromSeconds(1));
+                entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
 
                 var template = await _templateService.GetTemplateAsync(templateName, options);
                 return template;
