@@ -17,22 +17,15 @@ namespace NodeServicesBenchmark.Website.Extensions
 
             if (options != null)
             {
-                key.Append(GenerateSHA256String(options));
+                key.Append(GenerateBase64String(options));
             }
 
             return key.ToString();
         }
-        public static string GenerateSHA256String(object obj)
+        public static string GenerateBase64String(object obj)
         {
-            var bytes = Encoding.UTF8.GetBytes(obj.GetHashCode().ToString());
-            byte[] hash;
-
-            using (var sha1 = new SHA1Managed())
-            {
-                hash = sha1.ComputeHash(bytes);
-            }
-
-            return string.Concat(Array.ConvertAll(hash, x => x.ToString("X2")));
+            var hash = Encoding.UTF8.GetBytes(obj.GetHashCode().ToString());
+            return Convert.ToBase64String(hash);
         }
     }
 }
