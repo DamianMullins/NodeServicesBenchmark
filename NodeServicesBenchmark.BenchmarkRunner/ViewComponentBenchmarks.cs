@@ -16,12 +16,12 @@ namespace NodeServicesBenchmark.BenchmarkRunner
         }
 
         [Benchmark(Baseline = true)]
-        public async Task No_Template() => await _server.HttpGet("no-template");
+        public async Task No_Template() => await _server.HttpGet("benchmarks/RazorTemplate");
 
         [Benchmark]
-        public async Task With_Template() => await _server.HttpGet("with-template");
+        public async Task With_Template() => await _server.HttpGet("benchmarks/NodeServices");
 
         [Benchmark]
-        public async Task With_Cached_Template() => await _server.HttpGet("with-cached-template");
+        public async Task With_Cached_Template() => await _server.HttpGet("benchmarks/CachedNodeServices");
     }
 }

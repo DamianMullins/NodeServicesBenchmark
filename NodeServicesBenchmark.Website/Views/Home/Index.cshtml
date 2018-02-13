@@ -1,7 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "With View Component";
+    ViewData["Title"] = "NodeServices Benchmarks";
 }
 
-<p><a asp-route="@RouteNames.NoTemplateServiceRoute">No Template Service</a></p>
-<p><a asp-route="@RouteNames.WithTemplateServiceRoute">With Template Service</a></p>
-<p><a asp-route="@RouteNames.WithCachedTemplateServiceRoute">With Cached Template Service</a></p>
+<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="RazorTemplate">No Template Service</a></p>
+<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="NodeServices">With Template Service</a></p>
+<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="CachedNodeServices">With Cached Template Service</a></p>

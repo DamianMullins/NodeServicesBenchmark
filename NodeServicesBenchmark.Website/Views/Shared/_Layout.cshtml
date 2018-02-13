@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using NodeServicesBenchmark.Website.Models
+@{
+    var viewType = (ViewType)ViewData["viewType"];
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +10,8 @@
     <title>@ViewData["Title"] - NodeServicesBenchmark</title>
 </head>
 <body>
+    @await Component.InvokeAsync("Header", new { viewType })
+
     @RenderBody()
 </body>
 </html>

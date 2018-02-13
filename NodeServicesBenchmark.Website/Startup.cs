@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NodeServicesBenchmark.Website.Services;
@@ -25,7 +26,10 @@ namespace NodeServicesBenchmark.Website
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
+                    opts => opts.ResourcesPath = "Resources");
+
             services.AddMemoryCache();
             services.AddNodeServices();
 
@@ -38,6 +42,12 @@ namespace NodeServicesBenchmark.Website
         {
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "benchmarks",
+                    template: "benchmarks/{viewType}",
+                    defaults: new { controller = "Home", action = RouteNames.Benchmarks }
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

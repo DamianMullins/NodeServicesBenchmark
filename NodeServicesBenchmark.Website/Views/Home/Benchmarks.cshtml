@@ -1,0 +1,8 @@
+﻿@using NodeServicesBenchmark.Website.Models
+@{
+    ViewData["Title"] = "With View Component";
+
+    var viewType = (ViewType)ViewData["viewType"];
+}
+
+@await Component.InvokeAsync("Loops", new { viewType })

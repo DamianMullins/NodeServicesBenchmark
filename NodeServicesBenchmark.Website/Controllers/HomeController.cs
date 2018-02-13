@@ -1,31 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NodeServicesBenchmark.Website.Models;
 
 namespace NodeServicesBenchmark.Website.Controllers
 {
     public class HomeController : Controller
     {
-
         [HttpGet(Name = RouteNames.Home)]
-        public IActionResult Index()
+        public IActionResult Index(ViewType viewType)
         {
+            ViewData["viewType"] = viewType;
             return View();
         }
 
-        [Route("no-template", Name = RouteNames.NoTemplateServiceRoute)]
-        public IActionResult NoTemplateService()
+        [HttpGet(Name = RouteNames.Benchmarks)]
+        public IActionResult Benchmarks(ViewType viewType)
         {
-            return View();
-        }
-
-        [Route("with-template", Name = RouteNames.WithTemplateServiceRoute)]
-        public IActionResult WithTemplateService()
-        {
-            return View();
-        }
-
-        [Route("with-cached-template", Name = RouteNames.WithCachedTemplateServiceRoute)]
-        public IActionResult WithCachedTemplateService()
-        {
+            ViewData["viewType"] = viewType;
             return View();
         }
     }
