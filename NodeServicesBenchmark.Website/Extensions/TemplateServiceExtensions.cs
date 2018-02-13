@@ -22,6 +22,7 @@ namespace NodeServicesBenchmark.Website.Extensions
 
             return key.ToString();
         }
+
         public static string GenerateBase64String(object obj)
         {
             var hash = Encoding.UTF8.GetBytes(obj.GetHashCode().ToString());
