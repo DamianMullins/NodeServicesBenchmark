@@ -12,8 +12,15 @@ namespace NodeServicesBenchmark.Website.Controllers
             return View();
         }
 
-        [HttpGet(Name = RouteNames.Benchmarks)]
-        public IActionResult Benchmarks(ViewType viewType)
+        [HttpGet(Name = RouteNames.LoopBenchmarks)]
+        public IActionResult LoopBenchmarks(ViewType viewType)
+        {
+            ViewData["viewType"] = viewType;
+            return View();
+        }
+
+        [HttpGet(Name = RouteNames.RandomLoopBenchmarks)]
+        public IActionResult RandomLoopBenchmarks(ViewType viewType)
         {
             ViewData["viewType"] = viewType;
             return View();

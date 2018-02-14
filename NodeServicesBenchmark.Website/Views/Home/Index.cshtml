@@ -2,6 +2,12 @@
     ViewData["Title"] = "NodeServices Benchmarks";
 }
 
-<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="RazorTemplate">No Template Service</a></p>
-<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="NodeServices">With Template Service</a></p>
-<p><a asp-route="@RouteNames.Benchmarks" asp-route-viewtype="CachedNodeServices">With Cached Template Service</a></p>
+<h2>Loop Benchmarks</h2>
+<p><a asp-route="@RouteNames.LoopBenchmarks" asp-route-viewtype="RazorTemplate">No Template Service</a></p>
+<p><a asp-route="@RouteNames.LoopBenchmarks" asp-route-viewtype="NodeServices">With Template Service</a></p>
+<p><a asp-route="@RouteNames.LoopBenchmarks" asp-route-viewtype="CachedNodeServices">With Cached Template Service</a></p>
+
+<h2>Random Data Loop Benchmarks</h2>
+<p><a asp-route="@RouteNames.RandomLoopBenchmarks" asp-route-viewtype="RazorTemplate">No Template Service</a></p>
+<p><a asp-route="@RouteNames.RandomLoopBenchmarks" asp-route-viewtype="NodeServices">With Template Service</a></p>
+<p><a asp-route="@RouteNames.RandomLoopBenchmarks" asp-route-viewtype="CachedNodeServices">With Cached Template Service</a></p>

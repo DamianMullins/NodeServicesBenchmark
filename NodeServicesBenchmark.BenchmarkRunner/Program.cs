@@ -6,7 +6,8 @@ namespace NodeServicesBenchmark.BenchmarkRunner
     {
         public static void Main()
         {
-            BenchmarkDotNet.Running.BenchmarkRunner.Run<ViewComponentBenchmarks>();
+            BenchmarkDotNet.Running.BenchmarkRunner.Run<LoopBenchmarks>();
+            BenchmarkDotNet.Running.BenchmarkRunner.Run<RandomLoopBenchmarks>();
 
             Console.Write("Press enter to exit...");
             Console.ReadLine();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace NodeServicesBenchmark.Website.Extensions
 {
@@ -17,16 +18,31 @@ namespace NodeServicesBenchmark.Website.Extensions
 
             if (options != null)
             {
-                key.Append(GenerateBase64String(options));
+                key.Append(GenerateHashedKey(options));
             }
 
             return key.ToString();
         }
 
-        public static string GenerateBase64String(object obj)
+        private static string GenerateHashedKey(object obj)
         {
-            var hash = Encoding.UTF8.GetBytes(obj.GetHashCode().ToString());
-            return Convert.ToBase64String(hash);
+            var json = JsonConvert.SerializeObject(obj);
+            return GetSha256FromString(json);
+        }
+
+        private static string GetSha256FromString(string strData)
+        {
+            var message = Encoding.ASCII.GetBytes(strData);
+            var hashString = new SHA256Managed();
+            var hashValue = hashString.ComputeHash(message);
+            var hex = new StringBuilder();
+
+            foreach (var x in hashValue)
+            {
+                hex.AppendFormat("{0:x2}", x);
+            }
+
+            return hex.ToString();
         }
     }
 }

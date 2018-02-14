@@ -43,9 +43,15 @@ namespace NodeServicesBenchmark.Website
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "benchmarks",
-                    template: "benchmarks/{viewType}",
-                    defaults: new { controller = "Home", action = RouteNames.Benchmarks }
+                    name: RouteNames.LoopBenchmarks,
+                    template: "loop-benchmarks/{viewType}",
+                    defaults: new { controller = "Home", action = "LoopBenchmarks" }
+                );
+
+                routes.MapRoute(
+                    name: RouteNames.RandomLoopBenchmarks,
+                    template: "random-loop-benchmarks/{viewType}",
+                    defaults: new { controller = "Home", action = "RandomLoopBenchmarks" }
                 );
 
                 routes.MapRoute(

@@ -1,0 +1,18 @@
+﻿@using NodeServicesBenchmark.Website.Models.Loops
+@model LoopModel
+@inject IViewLocalizer Localizer
+
+<!-- Razor -->
+<ul>
+    @foreach (var item in Model.LoopItems)
+    {
+        <li>
+            <h2>@item.Name</h2>
+            <h3>@item.Description</h3>
+
+            <img src="@item.ImageUrl" alt="@item.Name" />
+            <p>@Localizer["loop_address"] @item.Address</p>
+            <p>&pound;@item.Price</p>
+        </li>
+    }
+</ul>

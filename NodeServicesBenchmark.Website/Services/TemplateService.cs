@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.NodeServices;
@@ -23,8 +22,8 @@ namespace NodeServicesBenchmark.Website.Services
                 throw new ArgumentException("No value was provided for the template name", nameof(templateName));
             }
 
-            var moduleName = "templates/templates.js";
-            var functionName = "getTemplate";
+            const string moduleName = "templates/templates.js";
+            const string functionName = "getTemplate";
             var language = CultureInfo.CurrentUICulture.Name;
             var rawTemplate = await _nodeServices.InvokeExportAsync<string>(moduleName, functionName, templateName, language, options);
             var template = new HtmlString(rawTemplate);
