@@ -1,4 +1,4 @@
-# Microsoft.AspNetCore.NodeServices Benchmarks
+# NodeServices Benchmarks
 
 The benchmarks test the performance of using NodeServices in a .Net Core web application to compile & serve [Handlebars templates](https://github.com/wycats/handlebars.js/) versus the standard [Razor templates](https://github.com/aspnet/Razor).
 
