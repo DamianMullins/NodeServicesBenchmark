@@ -1,39 +1,53 @@
 # Microsoft.AspNetCore.NodeServices Benchmarks
 
-Quick and dirty benchmarks to test the performance when using NodeServices inside of a .Net Core application.
+The benchmarks test the performance of using NodeServices in a .Net Core web application to compile & serve [Handlebars templates](https://github.com/wycats/handlebars.js/) versus the standard [Razor templates](https://github.com/aspnet/Razor).
 
-## Details
 
-In the web project there are three routes with the following in the Razor view for each:
+## Running The Benchmarks
 
-- A view with static HTML
-- A view which injects `ITemplateService` and requests a template from the `f-header` npm package.
-- A view which injects `ICachedTemplateService` and requests a template from the `f-header` npm package.
+To run the benchmarks, first clone or download the project, then run `dotnet run -c release` in the `/NodeServicesBenchmark/NodeServicesBenchmark.BenchmarkRunner` directory.
 
-### ITemplateService
-
-`ITemplateService` calls `INodeServices.InvokeAsync()` which returns a handlebars template.
-
-### ICachedTemplateService
-
-`ICachedTemplateService` uses `IMemoryCache` to provide an in-memory cache, the `IMemoryCache.GetOrCreateAsync()` method is called and will return a cached template if one is found, otherwise it will call `INodeServices.InvokeAsync()` which returns a handlebars template, add the template to the cache, then return the template.
 
 ## Benchmark Application
 
-The benchmark application uses the `Microsoft.AspNetCore.TestHost` package to create a test server instance which will then call a specified url a set number of times, recording the time taken for each request, then returning the average of those times.
+The [benchmark application](NodeServicesBenchmark.BenchmarkRunner) uses [`BenchmarkDotNet`](https://github.com/dotnet/BenchmarkDotNet) to run the benchmarks. The benchmarks [set use a TestServer](NodeServicesBenchmark.BenchmarkRunner/TestHttpServer.cs), which uses the `Microsoft.AspNetCore.TestHost` package, to create a test instance of the benchmark website.
 
-> Note: The first request is omitted from the average calculation as it has to spin up the test server and this skews the average time taken.
+There are two classes which contain benchmarks; [`LoopBenchmarks.cs`](NodeServicesBenchmark.BenchmarkRunner/LoopBenchmarks.cs) and [`RandomLoopBenchmarks.cs`](NodeServicesBenchmark.BenchmarkRunner/RandomLoopBenchmarks.cs), these call out to the routes described in the [Web App Details](#web-app-details) section.
 
-## Local Test Run Results
 
-_**Run on a Dell XPS 15, Win 10 Pro 64-bit, Intel Core i7-4712HQ 2.3GHz CPU, 16GB RAM**_
+## Web App Details
 
-Each test run performs 1000 requests against the an endpoint.
+In the web project there are six routes with the following in each:
 
-| Run # | No Template Service | With Template Service | With Cached Template Service |
-|-------|---------------------|-----------------------|------------------------------|
-| 1     | 0.04ms              | 2.38ms                | 0.03ms                       |
-| 2     | 0.05ms              | 2.36ms                | 0.03ms                       |
-| 3     | 0.04ms              | 2.24ms                | 0.03ms                       |
-| 4     | 0.03ms              | 2.34ms                | 0.03ms                       |
-| 5     | 0.03ms              | 2.35ms                | 0.02ms                       |
+- Razor template with the same data each time the page is loaded
+- Handlebars template with the same data each time the page is loaded
+- Cached Handlebars template with the same data each time the page is loaded
+- Razor template with random data each time the page is loaded
+- Handlebars template with random data each time the page is loaded
+- Cached Handlebars template with random data each time the page is loaded
+
+
+### View Components
+
+Both the random and non-random sets of routes are [served via two view components](NodeServicesBenchmark.Website/ViewComponents). Each view component contains logic which decides how it is going to serve up the HTML — Razor or Handlebars.
+
+
+### Handlebars templates
+
+The handlebars templates are [served via NodeServices in `TemplateService.cs`](NodeServicesBenchmark.Website/Services/TemplateService.cs) which calls a [node module called `templates.js`](NodeServicesBenchmark.Website/templates/templates.js).
+
+`templates.js` is a self contained, pre-bundled version of [the Just Eat `f-templates` module](https://github.com/justeat/f-templates) which looks up Handlebars templates, partials, and resources (translations) which live in [a `templates` directory](NodeServicesBenchmark.Website/templates). Because it has been pre-bundled there is no need to deploy a node_modules directory to a production server.
+
+
+### Node Services
+
+Node services can be called in one of two ways
+
+#### TemplateService
+
+The [`TemplateService`](NodeServicesBenchmark.Website/Services/TemplateService.cs) calls `INodeServices.InvokeExportAsync()`, passing down some options, which then returns a Handlebars template.
+
+#### CachedTemplateService
+
+The [`CachedTemplateService`](NodeServicesBenchmark.Website/Services/CachedTemplateService.cs) calls down to the [`TemplateService`](NodeServicesBenchmark.Website/Services/TemplateService.cs) and then uses `IMemoryCache` to store the result in an in-memory cache, so any subsequent requests will return the result from the cache.
+
